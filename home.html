@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GPA Calculator Hub</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GPA Calculator - SGPA to CGPA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -45,13 +45,12 @@
     }
 
     .container {
-      max-width: 800px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 1rem;
+      padding: 2rem;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
     }
 
     .header {
@@ -63,19 +62,19 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 80px;
-      height: 80px;
+      width: 64px;
+      height: 64px;
       background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-      border-radius: 20px;
+      border-radius: 16px;
       font-weight: 800;
-      font-size: 32px;
+      font-size: 24px;
       color: white;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       box-shadow: var(--shadow-lg);
     }
 
     .title {
-      font-size: 3rem;
+      font-size: 2.5rem;
       font-weight: 800;
       margin-bottom: 0.5rem;
       background: linear-gradient(135deg, var(--text-primary), var(--accent-primary));
@@ -86,127 +85,444 @@
 
     .subtitle {
       color: var(--text-secondary);
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 400;
     }
 
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    .card {
+    .main-card {
       background: var(--bg-card);
       border-radius: 20px;
       padding: 2rem;
-      border: 1px solid var(--border);
       box-shadow: var(--shadow-xl);
+      border: 1px solid var(--border);
       backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
     }
 
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    .controls-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .control-label {
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .control-input {
+      background: var(--bg-input);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      color: var(--text-primary);
+      font-size: 1rem;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .control-input:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .control-input:hover {
       border-color: var(--accent-primary);
     }
 
-    .card-icon {
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1.5rem;
-      font-weight: 800;
-      font-size: 24px;
+    .btn {
+      background: var(--accent-primary);
       color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
-    .card-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
+    .btn:hover {
+      background: var(--accent-secondary);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border-light);
+      color: var(--text-secondary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-input);
       color: var(--text-primary);
     }
 
-    .card-description {
+    .btn-danger {
+      background: var(--error);
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .semester-section {
+      background: var(--bg-input);
+      border-radius: 16px;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .semester-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .semester-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+    }
+
+    .semester-count {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .semester-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-height: 500px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .semester-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .semester-list::-webkit-scrollbar-track {
+      background: var(--bg-input);
+      border-radius: 3px;
+    }
+
+    .semester-list::-webkit-scrollbar-thumb {
+      background: var(--border-light);
+      border-radius: 3px;
+    }
+
+    .semester-row {
+      display: grid;
+      grid-template-columns: 80px 1fr 120px 140px;
+      gap: 1rem;
+      align-items: center;
+      padding: 1rem;
+      background: var(--bg-card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+
+    .semester-row:hover {
+      border-color: var(--accent-primary);
+      transform: translateX(4px);
+    }
+
+    .semester-label {
+      font-weight: 700;
+      color: var(--accent-primary);
+      font-size: 0.9rem;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .input-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .input-field {
+      background: var(--bg-input);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    }
+
+    .input-field:read-only {
+      background: var(--bg-card);
       color: var(--text-secondary);
-      font-size: 1rem;
-      line-height: 1.6;
+      cursor: not-allowed;
+    }
+
+    .results-section {
+      background: var(--bg-input);
+      border-radius: 16px;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      position: sticky;
+      top: 2rem;
+    }
+
+    .result-item {
       margin-bottom: 1.5rem;
     }
 
-    .card-features {
-      list-style: none;
-      margin: 0;
-      padding: 0;
+    .result-item:last-child {
+      margin-bottom: 0;
     }
 
-    .card-features li {
-      color: var(--text-muted);
+    .result-label {
       font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 500;
       margin-bottom: 0.5rem;
+    }
+
+    .result-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .result-value.success {
+      color: var(--success);
+    }
+
+    .result-value.warning {
+      color: var(--warning);
+    }
+
+    .result-value.error {
+      color: var(--error);
+    }
+
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+    }
+
+    .breakdown-table th,
+    .breakdown-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .breakdown-table th {
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg-card);
+    }
+
+    .breakdown-table td {
+      color: var(--text-secondary);
+    }
+
+    .breakdown-table tr:hover {
+      background: var(--bg-card);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 1rem;
+      background: var(--bg-card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
 
-    .card-features li::before {
-      content: "✓";
-      color: var(--success);
-      font-weight: bold;
+    .alert-info {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      color: var(--accent-primary);
+    }
+
+    .alert-warning {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      color: var(--warning);
+    }
+
+    .alert-error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      color: var(--error);
     }
 
     .footer {
+      margin-top: 2rem;
       text-align: center;
       color: var(--text-muted);
       font-size: 0.9rem;
-      margin-top: 2rem;
+    }
+
+    .loading {
+      opacity: 0.6;
+      pointer-events: none;
     }
 
     .fade-in {
-      animation: fadeIn 0.6s ease-in;
+      animation: fadeIn 0.3s ease-in;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: var(--bg-input);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+      border-radius: 3px;
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+
+    .grade-indicator {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
     }
 
     @media (max-width: 768px) {
       .container {
-        padding: 0.5rem;
+        padding: 1rem;
       }
       
       .title {
         font-size: 2rem;
       }
       
-      .subtitle {
-        font-size: 1rem;
-      }
-      
-      .cards-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-      
-      .card {
+      .main-card {
         padding: 1.5rem;
       }
       
-      .logo {
-        width: 60px;
-        height: 60px;
-        font-size: 24px;
+      .controls-section {
+        grid-template-columns: 1fr;
+      }
+      
+      .semester-row {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+      
+      .btn-group {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
       }
     }
   </style>
@@ -215,47 +531,488 @@
   <div class="container">
     <header class="header">
       <div class="logo">GPA</div>
-      <h1 class="title">GPA Calculator Hub</h1>
-      <p class="subtitle">Choose your calculator and start calculating your academic performance</p>
+      <h1 class="title">GPA Calculator</h1>
+      <p class="subtitle">Calculate your CGPA from semester-wise SGPA and credits</p>
     </header>
 
-    <div class="cards-grid">
-      <a href="index.html" class="card fade-in">
-        <div class="card-icon">CGPA</div>
-        <h2 class="card-title">CGPA Calculator</h2>
-        <p class="card-description">
-          Calculate your Cumulative Grade Point Average (CGPA) from semester-wise SGPA and credits. 
-          Perfect for tracking your overall academic performance across multiple semesters.
-        </p>
-        <ul class="card-features">
-          <li>Multiple program types (B.Tech, MCA, M.Tech, etc.)</li>
-          <li>Custom semester count (1-20 semesters)</li>
-          <li>Real-time calculation and progress tracking</li>
-          <li>CSV export functionality</li>
-          <li>Visual progress bars and statistics</li>
-        </ul>
-      </a>
+    <div class="main-card">
+      <div class="controls-section">
+        <div class="control-group">
+          <label class="control-label">Program Type</label>
+          <select id="program" class="control-input">
+            <option value="btech" data-sems="8">B.Tech — 8 Semesters</option>
+            <option value="btech_6" data-sems="6">B.Tech — 6 Semesters</option>
+            <option value="btech_4" data-sems="4">B.Tech — 4 Semesters</option>
+            <option value="mca" data-sems="6">MCA — 6 Semesters</option>
+            <option value="mca_4" data-sems="4">MCA — 4 Semesters</option>
+            <option value="mtech" data-sems="4">M.Tech — 4 Semesters</option>
+            <option value="mtech_2" data-sems="2">M.Tech — 2 Semesters</option>
+            <option value="msc" data-sems="4">M.Sc — 4 Semesters</option>
+            <option value="msc_2" data-sems="2">M.Sc — 2 Semesters</option>
+            <option value="mba" data-sems="4">MBA — 4 Semesters</option>
+            <option value="mba_2" data-sems="2">MBA — 2 Semesters</option>
+            <option value="bca" data-sems="6">BCA — 6 Semesters</option>
+            <option value="bca_4" data-sems="4">BCA — 4 Semesters</option>
+            <option value="bsc" data-sems="6">B.Sc — 6 Semesters</option>
+            <option value="bsc_4" data-sems="4">B.Sc — 4 Semesters</option>
+            <option value="ba" data-sems="6">B.A — 6 Semesters</option>
+            <option value="ba_4" data-sems="4">B.A — 4 Semesters</option>
+            <option value="diploma" data-sems="6">Diploma — 6 Semesters</option>
+            <option value="diploma_4" data-sems="4">Diploma — 4 Semesters</option>
+            <option value="phd" data-sems="8">Ph.D — 8 Semesters</option>
+            <option value="phd_6" data-sems="6">Ph.D — 6 Semesters</option>
+            <option value="custom" data-sems="4">Custom — Choose Semesters</option>
+          </select>
+        </div>
 
-      <a href="sgpa.html" class="card fade-in">
-        <div class="card-icon">SGPA</div>
-        <h2 class="card-title">SGPA Calculator</h2>
-        <p class="card-description">
-          Calculate your Semester Grade Point Average (SGPA) from internal and external marks. 
-          Designed for 50-50 mark distribution with real-time grade point calculation.
-        </p>
-        <ul class="card-features">
-          <li>Internal + External marks (50-50 distribution)</li>
-          <li>Dynamic subject addition and removal</li>
-          <li>Real-time SGPA calculation</li>
-          <li>Grade point mapping (90+ = 10, 80+ = 9, etc.)</li>
-          <li>Detailed breakdown table</li>
-        </ul>
-      </a>
+        <div class="control-group" id="customCountGroup" style="display: none;">
+          <label class="control-label">Number of Semesters</label>
+          <input id="customCount" type="number" min="1" max="20" value="4" class="control-input" />
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Quick Semester Selector</label>
+          <select id="quickSemester" class="control-input">
+            <option value="">Select Semester Count</option>
+            <option value="1">1 Semester</option>
+            <option value="2">2 Semesters</option>
+            <option value="3">3 Semesters</option>
+            <option value="4">4 Semesters</option>
+            <option value="5">5 Semesters</option>
+            <option value="6">6 Semesters</option>
+            <option value="7">7 Semesters</option>
+            <option value="8">8 Semesters</option>
+            <option value="9">9 Semesters</option>
+            <option value="10">10 Semesters</option>
+            <option value="12">12 Semesters</option>
+            <option value="15">15 Semesters</option>
+            <option value="20">20 Semesters</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Actions</label>
+          <div class="btn-group">
+            <button id="generate" class="btn" title="Generate Fields (Ctrl+G)">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 3a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H6a.5.5 0 0 1 0-1h1.5V3.5A.5.5 0 0 1 8 3z"/>
+                <path d="M3.732 1.732a.5.5 0 0 1 .707 0l1.414 1.414a.5.5 0 1 1-.707.707L3.732 2.439a.5.5 0 0 1 0-.707z"/>
+                <path d="M12.268 1.732a.5.5 0 0 0-.707 0L10.146 3.146a.5.5 0 0 0 .707.707L12.268 2.439a.5.5 0 0 0 0-.707z"/>
+                <path d="M8 13a.5.5 0 0 1 .5-.5v-2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H9.5V12.5a.5.5 0 0 1-.5.5z"/>
+                <path d="M3.732 12.268a.5.5 0 0 0 .707 0l1.414-1.414a.5.5 0 1 0-.707-.707L3.732 11.561a.5.5 0 0 0 0 .707z"/>
+                <path d="M12.268 12.268a.5.5 0 0 1-.707 0L10.146 10.854a.5.5 0 0 1 .707-.707L12.268 11.561a.5.5 0 0 1 0 .707z"/>
+              </svg>
+              Generate Fields
+            </button>
+            <button id="reset" class="btn btn-secondary" title="Reset All (Ctrl+R)">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 3a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H6a.5.5 0 0 1 0-1h1.5V3.5A.5.5 0 0 1 8 3z"/>
+                <path d="M3.732 1.732a.5.5 0 0 1 .707 0l1.414 1.414a.5.5 0 1 1-.707.707L3.732 2.439a.5.5 0 0 1 0-.707z"/>
+                <path d="M12.268 1.732a.5.5 0 0 0-.707 0L10.146 3.146a.5.5 0 0 0 .707.707L12.268 2.439a.5.5 0 0 0 0-.707z"/>
+                <path d="M8 13a.5.5 0 0 1 .5-.5v-2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H9.5V12.5a.5.5 0 0 1-.5.5z"/>
+                <path d="M3.732 12.268a.5.5 0 0 0 .707 0l1.414-1.414a.5.5 0 1 0-.707-.707L3.732 11.561a.5.5 0 0 0 0 .707z"/>
+                <path d="M12.268 12.268a.5.5 0 0 1-.707 0L10.146 10.854a.5.5 0 0 1 .707-.707L12.268 11.561a.5.5 0 0 1 0 .707z"/>
+              </svg>
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div class="semester-section">
+          <div class="semester-header">
+            <div class="semester-title">Semester Details</div>
+            <div class="semester-count" id="semesterCount">0 semesters</div>
+          </div>
+          
+          <div id="alertContainer"></div>
+          
+          <div class="semester-list" id="semesterList">
+            <!-- Semesters will be generated here -->
+      </div>
+
+          <div class="alert alert-info" style="margin-top: 1rem;">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+            </svg>
+        <div>
+              <strong>Formula:</strong> CGPA = Total Grade Points ÷ Total Credits<br>
+              <strong>Grade Points = Credits × SGPA</strong><br>
+              <strong>Tip:</strong> Use "Quick Semester Selector" for any number of semesters (1-20)
+            </div>
+          </div>
+          </div>
+
+        <div class="results-section">
+          <div class="result-item">
+            <div class="result-label">Total Credits</div>
+            <div class="result-value" id="totalCredits">0</div>
+        </div>
+
+          <div class="result-item">
+            <div class="result-label">Total Grade Points</div>
+            <div class="result-value" id="totalPoints">0.00</div>
+          </div>
+
+          <div class="result-item">
+            <div class="result-label">CGPA</div>
+            <div class="result-value" id="cgpa">0.00</div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="cgpaProgress"></div>
+            </div>
+            <div class="grade-indicator">
+              <span>0.0</span>
+              <span>5.0</span>
+              <span>10.0</span>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-value" id="avgCredits">0</div>
+              <div class="stat-label">Avg Credits/Sem</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="avgSGPA">0.00</div>
+              <div class="stat-label">Avg SGPA</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="semesterCount">0</div>
+              <div class="stat-label">Total Semesters</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="validSemesters">0</div>
+              <div class="stat-label">Valid Semesters</div>
+            </div>
+          </div>
+
+          <table class="breakdown-table hidden" id="breakdownTable">
+            <thead>
+              <tr>
+                <th>Semester</th>
+                <th>Credits</th>
+                <th>SGPA</th>
+                <th>Grade Points</th>
+              </tr>
+            </thead>
+            <tbody id="breakdownBody"></tbody>
+            </table>
+
+          <div style="margin-top: 1.5rem;">
+            <button id="download" class="btn btn-secondary" style="width: 100%;" title="Download CSV (Ctrl+S)">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+              </svg>
+              Download CSV
+            </button>
+          </div>
+      </div>
+    </div>
     </div>
 
     <footer class="footer">
-      Made with ❤️ for students • Follows standard GPA calculation formulas
+      Made with ❤️ for students • Follows standard GPA calculation formula
     </footer>
   </div>
+
+  <script>
+    class GPACalculator {
+      constructor() {
+        this.elements = {
+          program: document.getElementById('program'),
+          customCount: document.getElementById('customCount'),
+          customCountGroup: document.getElementById('customCountGroup'),
+          quickSemester: document.getElementById('quickSemester'),
+          generate: document.getElementById('generate'),
+          reset: document.getElementById('reset'),
+          semesterList: document.getElementById('semesterList'),
+          semesterCount: document.getElementById('semesterCount'),
+          alertContainer: document.getElementById('alertContainer'),
+          totalCredits: document.getElementById('totalCredits'),
+          totalPoints: document.getElementById('totalPoints'),
+          cgpa: document.getElementById('cgpa'),
+          cgpaProgress: document.getElementById('cgpaProgress'),
+          avgCredits: document.getElementById('avgCredits'),
+          avgSGPA: document.getElementById('avgSGPA'),
+          validSemesters: document.getElementById('validSemesters'),
+          breakdownTable: document.getElementById('breakdownTable'),
+          breakdownBody: document.getElementById('breakdownBody'),
+          download: document.getElementById('download')
+        };
+
+        this.currentSemesters = 0;
+        this.init();
+      }
+
+      init() {
+        this.bindEvents();
+        this.createFields(this.getSemesterCount());
+        this.compute();
+      }
+
+      bindEvents() {
+        this.elements.program.addEventListener('change', () => this.handleProgramChange());
+        this.elements.quickSemester.addEventListener('change', () => this.handleQuickSemesterChange());
+        this.elements.generate.addEventListener('click', () => this.handleGenerate());
+        this.elements.reset.addEventListener('click', () => this.handleReset());
+        this.elements.download.addEventListener('click', () => this.handleDownload());
+        this.elements.semesterList.addEventListener('input', () => this.compute());
+        this.elements.customCount.addEventListener('input', () => this.updateSemesterCount());
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+          if (e.ctrlKey || e.metaKey) {
+            switch(e.key) {
+              case 'g':
+                e.preventDefault();
+                this.handleGenerate();
+                break;
+              case 'r':
+                e.preventDefault();
+                this.handleReset();
+                break;
+              case 's':
+                e.preventDefault();
+                this.handleDownload();
+                break;
+            }
+          }
+        });
+      }
+
+      getSemesterCount() {
+        const option = this.elements.program.selectedOptions[0];
+        if (option.value === 'custom') {
+          return Math.max(1, Math.min(20, parseInt(this.elements.customCount.value) || 4));
+        }
+        return parseInt(option.dataset.sems, 10);
+      }
+
+      handleProgramChange() {
+        const option = this.elements.program.selectedOptions[0];
+        if (option.value === 'custom') {
+          this.elements.customCountGroup.style.display = 'block';
+        } else {
+          this.elements.customCountGroup.style.display = 'none';
+        }
+        this.createFields(this.getSemesterCount());
+      }
+
+      handleGenerate() {
+        this.createFields(this.getSemesterCount());
+        this.showAlert('Fields generated successfully!', 'info');
+      }
+
+      handleReset() {
+        this.createFields(this.getSemesterCount());
+        this.clearAlerts();
+        this.showAlert('All fields have been reset!', 'info');
+      }
+
+      updateSemesterCount() {
+        if (this.elements.program.value === 'custom') {
+          this.createFields(this.getSemesterCount());
+        }
+      }
+
+      handleQuickSemesterChange() {
+        const selectedValue = this.elements.quickSemester.value;
+        if (selectedValue) {
+          this.createFields(parseInt(selectedValue));
+          this.showAlert(`${selectedValue} semester(s) generated!`, 'info');
+        }
+      }
+
+      createFields(count) {
+        this.elements.semesterList.innerHTML = '';
+        this.currentSemesters = count;
+        this.elements.semesterCount.textContent = `${count} semester${count !== 1 ? 's' : ''}`;
+
+        for (let i = 1; i <= count; i++) {
+          const row = this.createSemesterRow(i);
+          this.elements.semesterList.appendChild(row);
+        }
+
+        this.compute();
+      }
+
+      createSemesterRow(semesterNumber) {
+        const row = document.createElement('div');
+        row.className = 'semester-row fade-in';
+        row.innerHTML = `
+          <div class="semester-label">Sem ${semesterNumber}</div>
+          <div class="input-group">
+            <label class="input-label">Credits</label>
+            <input class="input-field credits" type="number" min="0" step="0.5" value="20" placeholder="Enter credits">
+          </div>
+          <div class="input-group">
+            <label class="input-label">SGPA</label>
+            <input class="input-field sgpa" type="number" min="0" max="10" step="0.01" value="8.00" placeholder="0.00-10.00">
+          </div>
+          <div class="input-group">
+            <label class="input-label">Grade Points</label>
+            <input class="input-field gpoints" type="number" readonly value="0" placeholder="Auto-calculated">
+          </div>
+        `;
+        return row;
+      }
+
+      compute() {
+        const rows = Array.from(document.querySelectorAll('.semester-row'));
+      let totalCredits = 0;
+      let totalPoints = 0;
+        let validSemesters = 0;
+      const breakdown = [];
+        let hasErrors = false;
+
+        rows.forEach((row, index) => {
+          const credits = parseFloat(row.querySelector('.credits').value) || 0;
+          const sgpa = parseFloat(row.querySelector('.sgpa').value) || 0;
+        const gpoints = +(credits * sgpa).toFixed(3);
+          
+          row.querySelector('.gpoints').value = gpoints;
+          
+          if (credits > 0 && sgpa > 0) {
+        totalCredits += credits;
+        totalPoints += gpoints;
+            validSemesters++;
+          }
+          
+          breakdown.push({
+            semester: index + 1,
+            credits,
+            sgpa,
+            gpoints
+          });
+
+          if (credits < 0 || sgpa < 0) {
+            hasErrors = true;
+          }
+        });
+
+        const cgpa = totalCredits > 0 ? (totalPoints / totalCredits) : 0;
+        const avgCredits = validSemesters > 0 ? (totalCredits / validSemesters) : 0;
+        const avgSGPA = validSemesters > 0 ? (totalPoints / totalCredits) : 0;
+
+        this.updateResults(totalCredits, totalPoints, cgpa, avgCredits, avgSGPA, validSemesters);
+        this.updateBreakdown(breakdown);
+        this.updateAlerts(validSemesters, hasErrors);
+
+        return { totalCredits, totalPoints, cgpa, validSemesters, hasErrors };
+      }
+
+      updateResults(totalCredits, totalPoints, cgpa, avgCredits, avgSGPA, validSemesters) {
+        this.elements.totalCredits.textContent = totalCredits.toFixed(2);
+        this.elements.totalPoints.textContent = totalPoints.toFixed(3);
+        this.elements.cgpa.textContent = cgpa.toFixed(3);
+        this.elements.avgCredits.textContent = avgCredits.toFixed(1);
+        this.elements.avgSGPA.textContent = avgSGPA.toFixed(3);
+        this.elements.validSemesters.textContent = validSemesters;
+        this.elements.semesterCount.textContent = this.currentSemesters;
+
+        // Update CGPA color based on value
+        this.elements.cgpa.className = 'result-value';
+        if (cgpa >= 8.5) {
+          this.elements.cgpa.classList.add('success');
+        } else if (cgpa >= 7.0) {
+          this.elements.cgpa.classList.add('warning');
+        } else if (cgpa > 0) {
+          this.elements.cgpa.classList.add('error');
+        }
+
+        // Update progress bar
+        const progressPercentage = (cgpa / 10) * 100;
+        this.elements.cgpaProgress.style.width = `${Math.min(100, progressPercentage)}%`;
+      }
+
+      updateBreakdown(breakdown) {
+        this.elements.breakdownBody.innerHTML = '';
+        
+        breakdown.forEach(row => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>Semester ${row.semester}</td>
+            <td>${row.credits}</td>
+            <td>${row.sgpa.toFixed(2)}</td>
+            <td>${row.gpoints.toFixed(3)}</td>
+          `;
+          this.elements.breakdownBody.appendChild(tr);
+        });
+
+        this.elements.breakdownTable.classList.toggle('hidden', breakdown.length === 0);
+      }
+
+      updateAlerts(validSemesters, hasErrors) {
+        this.clearAlerts();
+
+        if (hasErrors) {
+          this.showAlert('Some values are negative. Please enter valid positive numbers.', 'error');
+        } else if (validSemesters === 0) {
+          this.showAlert('Please enter valid credits and SGPA values to calculate CGPA.', 'warning');
+        } else if (validSemesters < this.currentSemesters) {
+          this.showAlert(`${this.currentSemesters - validSemesters} semester(s) have invalid data.`, 'warning');
+        }
+      }
+
+      showAlert(message, type = 'info') {
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type}`;
+        alert.innerHTML = `
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            ${type === 'info' ? '<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>' : ''}
+            ${type === 'warning' ? '<path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>' : ''}
+            ${type === 'error' ? '<path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>' : ''}
+          </svg>
+          <div>${message}</div>
+        `;
+        
+        this.elements.alertContainer.appendChild(alert);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+          if (alert.parentNode) {
+            alert.remove();
+          }
+        }, 5000);
+      }
+
+      clearAlerts() {
+        this.elements.alertContainer.innerHTML = '';
+      }
+
+      handleDownload() {
+        const rows = Array.from(document.querySelectorAll('.semester-row')).map((row, index) => ({
+          semester: index + 1,
+          credits: row.querySelector('.credits').value,
+          sgpa: row.querySelector('.sgpa').value,
+          gpoints: row.querySelector('.gpoints').value
+        }));
+
+        const headers = ['Semester', 'Credits', 'SGPA', 'Grade Points'];
+        const csv = [headers.join(',')].concat(
+          rows.map(row => [row.semester, row.credits, row.sgpa, row.gpoints].join(','))
+        ).join('\n');
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `gpa_calculation_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+
+        this.showAlert('CSV file downloaded successfully!', 'info');
+      }
+    }
+
+    // Initialize the calculator when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      new GPACalculator();
+    });
+  </script>
 </body>
 </html>
