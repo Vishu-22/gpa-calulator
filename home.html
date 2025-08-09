@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPA Calculator Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0f1c;
+      --bg-secondary: #111827;
+      --bg-card: #1f2937;
+      --bg-input: #374151;
+      --text-primary: #f9fafb;
+      --text-secondary: #d1d5db;
+      --text-muted: #9ca3af;
+      --accent-primary: #3b82f6;
+      --accent-secondary: #1d4ed8;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --border: #374151;
+      --border-light: #4b5563;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 32px;
+      color: white;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .title {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--text-primary), var(--accent-primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.2rem;
+      font-weight: 400;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-xl);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      border-color: var(--accent-primary);
+    }
+
+    .card-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      font-weight: 800;
+      font-size: 24px;
+      color: white;
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+    }
+
+    .card-description {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-features {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .card-features li {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-features li::before {
+      content: "✓";
+      color: var(--success);
+      font-weight: bold;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 2rem;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 0.5rem;
+      }
+      
+      .title {
+        font-size: 2rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+      }
+      
+      .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .card {
+        padding: 1.5rem;
+      }
+      
+      .logo {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo">GPA</div>
+      <h1 class="title">GPA Calculator Hub</h1>
+      <p class="subtitle">Choose your calculator and start calculating your academic performance</p>
+    </header>
+
+    <div class="cards-grid">
+      <a href="index.html" class="card fade-in">
+        <div class="card-icon">CGPA</div>
+        <h2 class="card-title">CGPA Calculator</h2>
+        <p class="card-description">
+          Calculate your Cumulative Grade Point Average (CGPA) from semester-wise SGPA and credits. 
+          Perfect for tracking your overall academic performance across multiple semesters.
+        </p>
+        <ul class="card-features">
+          <li>Multiple program types (B.Tech, MCA, M.Tech, etc.)</li>
+          <li>Custom semester count (1-20 semesters)</li>
+          <li>Real-time calculation and progress tracking</li>
+          <li>CSV export functionality</li>
+          <li>Visual progress bars and statistics</li>
+        </ul>
+      </a>
+
+      <a href="sgpa.html" class="card fade-in">
+        <div class="card-icon">SGPA</div>
+        <h2 class="card-title">SGPA Calculator</h2>
+        <p class="card-description">
+          Calculate your Semester Grade Point Average (SGPA) from internal and external marks. 
+          Designed for 50-50 mark distribution with real-time grade point calculation.
+        </p>
+        <ul class="card-features">
+          <li>Internal + External marks (50-50 distribution)</li>
+          <li>Dynamic subject addition and removal</li>
+          <li>Real-time SGPA calculation</li>
+          <li>Grade point mapping (90+ = 10, 80+ = 9, etc.)</li>
+          <li>Detailed breakdown table</li>
+        </ul>
+      </a>
+    </div>
+
+    <footer class="footer">
+      Made with ❤️ for students • Follows standard GPA calculation formulas
+    </footer>
+  </div>
+</body>
+</html>
