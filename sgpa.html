@@ -398,6 +398,51 @@
       margin-top: 0.25rem;
     }
 
+    .letter-grade {
+      font-weight: 700;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      text-align: center;
+      min-width: 30px;
+    }
+
+    .letter-grade.o { background: #10b981; color: white; }
+    .letter-grade.a-plus { background: #3b82f6; color: white; }
+    .letter-grade.a { background: #8b5cf6; color: white; }
+    .letter-grade.b-plus { background: #f59e0b; color: white; }
+    .letter-grade.b { background: #f97316; color: white; }
+    .letter-grade.c { background: #ef4444; color: white; }
+    .letter-grade.p { background: #6b7280; color: white; }
+    .letter-grade.f { background: #dc2626; color: white; }
+
+    .overall-grade {
+      background: var(--bg-input);
+      border-radius: 12px;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .overall-grade-label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .overall-grade-value {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+
+    .overall-performance {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
     .fade-in {
       animation: fadeIn 0.3s ease-in;
     }
@@ -461,6 +506,16 @@
       .breakdown-table td {
         padding: 0.5rem 0.25rem;
       }
+      
+      .letter-grade {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.4rem;
+        min-width: 25px;
+      }
+      
+      .overall-grade-value {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
@@ -512,7 +567,7 @@
         </svg>
         <div>
           <strong>Mark Distribution:</strong> Internal 50 + External 50 = 100 total marks<br>
-          <strong>Grade Points:</strong> 90+ = 10, 80+ = 9, 70+ = 8, 60+ = 7, 50+ = 6, 45+ = 5, 40+ = 4<br>
+          <strong>Grading System:</strong> 91-100 (O), 81-90 (A+), 71-80 (A), 61-70 (B+), 51-60 (B), 41-50 (C), 40 (P), <40 (F)<br>
           <strong>Formula:</strong> SGPA = Total Grade Points ÷ Total Credits
         </div>
       </div>
@@ -545,6 +600,12 @@
           </div>
         </div>
 
+        <div class="overall-grade hidden" id="overallGrade">
+          <div class="overall-grade-label">Overall Grade</div>
+          <div class="overall-grade-value" id="overallGradeValue">-</div>
+          <div class="overall-performance" id="overallPerformance">-</div>
+        </div>
+
         <table class="breakdown-table" id="breakdownTable">
           <thead>
             <tr>
@@ -552,6 +613,8 @@
               <th>Internal</th>
               <th>External</th>
               <th>Total</th>
+              <th>Letter Grade</th>
+              <th>Performance</th>
               <th>Grade Point</th>
               <th>Credit</th>
               <th>Weighted Grade</th>
@@ -577,7 +640,10 @@
           sgpa: document.getElementById('sgpa'),
           sgpaProgress: document.getElementById('sgpaProgress'),
           breakdownTable: document.getElementById('breakdownTable'),
-          breakdownBody: document.getElementById('breakdownBody')
+          breakdownBody: document.getElementById('breakdownBody'),
+          overallGrade: document.getElementById('overallGrade'),
+          overallGradeValue: document.getElementById('overallGradeValue'),
+          overallPerformance: document.getElementById('overallPerformance')
         };
 
         this.subjectCount = 0;
@@ -652,15 +718,33 @@
         });
       }
 
+      getGradeInfo(totalMarks) {
+        if (totalMarks >= 91) return { gradePoint: 10, letterGrade: 'O', performance: 'Outstanding' };
+        if (totalMarks >= 81) return { gradePoint: 9, letterGrade: 'A+', performance: 'Excellent' };
+        if (totalMarks >= 71) return { gradePoint: 8, letterGrade: 'A', performance: 'Very Good' };
+        if (totalMarks >= 61) return { gradePoint: 7, letterGrade: 'B+', performance: 'Good' };
+        if (totalMarks >= 51) return { gradePoint: 6, letterGrade: 'B', performance: 'Above Average' };
+        if (totalMarks >= 41) return { gradePoint: 5, letterGrade: 'C', performance: 'Average' };
+        if (totalMarks >= 40) return { gradePoint: 4, letterGrade: 'P', performance: 'Fair' };
+        return { gradePoint: 0, letterGrade: 'F', performance: 'Fail' };
+      }
+
       getGradePoint(totalMarks) {
-        if (totalMarks >= 90) return 10;
-        if (totalMarks >= 80) return 9;
-        if (totalMarks >= 70) return 8;
-        if (totalMarks >= 60) return 7;
-        if (totalMarks >= 50) return 6;
-        if (totalMarks >= 45) return 5;
-        if (totalMarks >= 40) return 4;
-        return 0;
+        return this.getGradeInfo(totalMarks).gradePoint;
+      }
+
+      getGradeClass(letterGrade) {
+        switch(letterGrade) {
+          case 'O': return 'o';
+          case 'A+': return 'a-plus';
+          case 'A': return 'a';
+          case 'B+': return 'b-plus';
+          case 'B': return 'b';
+          case 'C': return 'c';
+          case 'P': return 'p';
+          case 'F': return 'f';
+          default: return 'f';
+        }
       }
 
       calculateSGPA() {
@@ -674,8 +758,8 @@
           const external = parseFloat(subject.querySelector('.external').value) || 0;
           const credit = parseFloat(subject.querySelector('.credit').value) || 0;
           const total = internal + external;
-          const gradePoint = this.getGradePoint(total);
-          const weightedGrade = gradePoint * credit;
+          const gradeInfo = this.getGradeInfo(total);
+          const weightedGrade = gradeInfo.gradePoint * credit;
 
           // Update total field
           subject.querySelector('.total').value = total;
@@ -688,7 +772,9 @@
             internal,
             external,
             total,
-            gradePoint,
+            letterGrade: gradeInfo.letterGrade,
+            performance: gradeInfo.performance,
+            gradePoint: gradeInfo.gradePoint,
             credit,
             weightedGrade
           });
@@ -699,6 +785,7 @@
         this.updateResults(totalCredits, totalGradePoints, sgpa);
         this.updateBreakdown(breakdown);
         this.elements.resultsSection.classList.remove('hidden');
+        this.elements.overallGrade.classList.remove('hidden');
       }
 
       updateResults(totalCredits, totalGradePoints, sgpa) {
@@ -719,6 +806,14 @@
         // Update progress bar
         const progressPercentage = (sgpa / 10) * 100;
         this.elements.sgpaProgress.style.width = `${Math.min(100, progressPercentage)}%`;
+
+        // Update overall grade
+        const overallGradeInfo = this.getGradeInfo(sgpa * 10); // Convert SGPA to percentage scale
+        this.elements.overallGradeValue.textContent = overallGradeInfo.letterGrade;
+        this.elements.overallPerformance.textContent = overallGradeInfo.performance;
+        
+        // Update overall grade styling
+        this.elements.overallGradeValue.className = `overall-grade-value letter-grade ${this.getGradeClass(overallGradeInfo.letterGrade)}`;
       }
 
       updateBreakdown(breakdown) {
@@ -731,6 +826,8 @@
             <td>${row.internal}</td>
             <td>${row.external}</td>
             <td>${row.total}</td>
+            <td><span class="letter-grade ${this.getGradeClass(row.letterGrade)}">${row.letterGrade}</span></td>
+            <td>${row.performance}</td>
             <td>${row.gradePoint}</td>
             <td>${row.credit}</td>
             <td>${row.weightedGrade.toFixed(3)}</td>
@@ -742,6 +839,7 @@
       resetAll() {
         this.elements.subjectsContainer.innerHTML = '';
         this.elements.resultsSection.classList.add('hidden');
+        this.elements.overallGrade.classList.add('hidden');
         this.subjectCount = 0;
         this.addSubject();
       }
